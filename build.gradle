@@ -24,6 +24,10 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // JPA dependency add
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // db driver dependency add
+    implementation 'org.postgresql:postgresql:42.7.3'
 }
 
 tasks.named('test') {
