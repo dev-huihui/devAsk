@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
+import lombok.Setter;
 
-@Entity
 @Getter
-@Table(name="T_USER")
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name="T_USER")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USER_ID", nullable = false, unique = true)
-    private Long userId;
+    private String userId;
 
     @Column(name="USER_PW", nullable = false)
     private String password;
@@ -24,8 +25,4 @@ public class User {
 
     @Column(name="EMAIL", nullable = false)
     private String email;
-
-    public User(String name) {
-    }
-
 }
