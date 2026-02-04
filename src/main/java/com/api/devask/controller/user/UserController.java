@@ -1,7 +1,7 @@
-package com.api.devask.controller.sample;
+package com.api.devask.controller.user;
 
-import com.api.devask.domain.sample.User;
-import com.api.devask.service.sample.UserService;
+import com.api.devask.domain.user.User;
+import com.api.devask.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,13 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<String> addUser(@RequestBody User user) {
         userService.addUser(user);
+        return ResponseEntity.ok("success");
+    }
+
+    // 2026.02.05 사용자 정보 수정하는 controller
+    @PostMapping("/modify")
+    public ResponseEntity<String> modifyUser(@RequestBody User user) {
+        userService.modifyUser(user);
         return ResponseEntity.ok("success");
     }
 }

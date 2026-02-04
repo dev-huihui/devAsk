@@ -1,4 +1,4 @@
-package com.api.devask.domain.sample;
+package com.api.devask.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
