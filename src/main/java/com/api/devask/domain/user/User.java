@@ -25,4 +25,7 @@ public class User {
 
     @Column(name="EMAIL", nullable = false)
     private String email;
+
+    @Column(name="AUTH", nullable = false)
+    private String auth;
 }

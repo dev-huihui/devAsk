@@ -1,25 +1,21 @@
 package com.api.devask.service.user.Impl;
 
 import com.api.devask.domain.user.User;
+import com.api.devask.dto.user.UserResponseDTO;
 import com.api.devask.repository.user.UserRepository;
 import com.api.devask.service.user.UserService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     // 2026.01.28 user 정보를 저장하는 메소드
-    @Transactional
     @Override
+    @Transactional
     public void addUser(User user) {
         // TODO: 비밀번호 암호화 처리하도록 로직 추가 필요
         
@@ -28,8 +24,8 @@ public class UserServiceImpl implements UserService {
     }
 
     // 2026.02.05 user 정보 수정하는 메소드
-    @Transactional
     @Override
+    @Transactional
     public void modifyUser(User user) {
         /* 2026.02.05 userID로 정보 찾기
          * Optional 안에 값이 있으면 그 값을 꺼내고, 없으면 예외를 던져라 */
@@ -52,5 +48,17 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() != null) {
             changeUser.setEmail(user.getEmail());
         }
+    }
+
+    // 2026.02.08 user 정보를 조회하는 메소드
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponseDTO loadUserByUserId(String userId) {
+        /* 2026.02.05 userID로 정보 찾기
+         * Optional 안에 값이 있으면 그 값을 꺼내고, 없으면 예외를 던져라 */
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
+
+        return UserResponseDTO.from(user);
     }
 }
