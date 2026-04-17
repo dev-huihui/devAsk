@@ -30,7 +30,7 @@ public class UserController {
     }
 
     // 2026.02.08 사용자 정보 조회하는 controller
-    @GetMapping("{userId}/load")
+    @GetMapping("/{userId}/load")
     public UserResponseDTO loadUser(@PathVariable String userId) {
         return userService.loadUserByUserId(userId);
     }

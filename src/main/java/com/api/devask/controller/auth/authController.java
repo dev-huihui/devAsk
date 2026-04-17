@@ -24,8 +24,7 @@ public class authController {
 
     // 2026.04.17 로그인 기능추가
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody User user) {
-        LoginResponseDTO loginResponseDTO = authService.login(user);
-        return ResponseEntity.ok(loginResponseDTO);
+    public LoginResponseDTO login(@RequestBody User user) {
+        return authService.login(user);
     }
 }
