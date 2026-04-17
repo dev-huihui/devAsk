@@ -24,6 +24,12 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
+        /*
+         * TODO: 역할 설정이 필요할것으로 보이는데, 어떻게 설정할 것인지 생각이 필요
+         * 각각의 화면에서 값을 받아오고, 관리자는 관리자 화면에서 해당 값을 설정할 수 있도록 하는 것이 맞는 듯
+         */
+        // user.setRole("USER");
+
         // 2026.01.28 user 정보 저장
         userRepository.save(user);
     }

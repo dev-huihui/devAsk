@@ -10,22 +10,22 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name="T_USER")
+@Table(name = "T_USER")
 public class User {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="USER_ID", nullable = false, unique = true)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID", nullable = false, unique = true)
     private String userId;
 
-    @Column(name="USER_PW", nullable = false)
+    @Column(name = "USER_PW", nullable = false)
     private String password;
 
-    @Column(name="USER_NAME", nullable = false)
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
-    @Column(name="EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name="AUTH", nullable = false)
-    private String auth;
+    @Column(name = "ROLE", nullable = false)
+    private String role;
 }
