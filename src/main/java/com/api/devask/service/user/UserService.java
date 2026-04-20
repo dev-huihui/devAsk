@@ -9,4 +9,6 @@ public interface UserService {
     void modifyUser(User user);
 
     UserResponseDTO loadUserByUserId(String userId);
+
+    boolean checkUserId(String userId);
 }

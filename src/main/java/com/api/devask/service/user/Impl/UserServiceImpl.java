@@ -75,4 +75,11 @@ public class UserServiceImpl implements UserService {
 
         return UserResponseDTO.from(user);
     }
+
+    // 2026.04.20 아이디 중복 체크하는 메소드
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkUserId(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
 }

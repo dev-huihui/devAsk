@@ -34,4 +34,10 @@ public class UserController {
     public UserResponseDTO loadUser(@PathVariable String userId) {
         return userService.loadUserByUserId(userId);
     }
+
+    // 2026.04.20 아이디 중복 체크하는 controller
+    @GetMapping("/checkUserId")
+    public ResponseEntity<Boolean> checkUserId(@RequestParam String userId) {
+        return ResponseEntity.ok(userService.checkUserId(userId));
+    }
 }
