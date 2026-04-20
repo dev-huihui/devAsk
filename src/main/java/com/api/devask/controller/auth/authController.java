@@ -1,6 +1,7 @@
 package com.api.devask.controller.auth;
 
 import com.api.devask.domain.user.User;
+import com.api.devask.dto.auth.LoginRequestDTO;
 import com.api.devask.dto.auth.LoginResponseDTO;
 import com.api.devask.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class authController {
 
     // 2026.04.17 로그인 기능추가
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody User user) {
-        return authService.login(user);
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequest) {
+        return authService.login(loginRequest);
     }
 }

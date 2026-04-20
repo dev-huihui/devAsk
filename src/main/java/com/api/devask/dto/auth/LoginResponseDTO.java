@@ -3,6 +3,7 @@ package com.api.devask.dto.auth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+// 2026.04.20 로그인 응답 DTO
 @Getter
 @AllArgsConstructor
 public class LoginResponseDTO {

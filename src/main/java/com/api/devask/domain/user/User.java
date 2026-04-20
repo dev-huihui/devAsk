@@ -28,4 +28,7 @@ public class User {
 
     @Column(name = "ROLE", nullable = false)
     private String role;
+
+    @Column(name = "FAIL_CNT", nullable = false)
+    private Integer failCnt;
 }
