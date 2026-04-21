@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -19,6 +20,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addUser(User user) {
+        // 2026.04.21 아이디 중복체크
+        if (userRepository.existsByUserId(user.getUserId())) {
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        }
+
         // 2026.04.13 비밀번호 암호화 처리
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

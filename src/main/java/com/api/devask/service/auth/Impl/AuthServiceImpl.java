@@ -19,6 +19,7 @@ import com.api.devask.jwt.JwtUtil;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -30,10 +31,18 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void signUp(User user) {
+        // 2026.04.21 아이디 중복체크
+        if (userRepository.existsByUserId(user.getUserId())) {
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        }
+
         // 2026.04.13 비밀번호 암호화 처리
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+
+        // 2026.04.21 역할 설정 > 회원가입 로직이기에 USER로 고정
+        user.setRole("USER");
 
         // 2026.01.28 user 정보 저장
         userRepository.save(user);
