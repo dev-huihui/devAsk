@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor // Jackson 객체 생성을 위해 PUBLIC으로 변경
 @Entity
 @Table(name = "T_USER")
 @DynamicInsert
