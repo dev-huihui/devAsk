@@ -3,6 +3,7 @@ package com.api.devask.domain.user;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.hibernate.annotations.DynamicInsert;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "T_USER")
+@DynamicInsert
 public class User {
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,16 +32,16 @@ public class User {
     private String role;
 
     // 2026.04.20 부가적인 기능(로그인 실패횟수, 계정잠금)
-    @Column(name = "FAIL_CNT", nullable = false)
+    @Column(name = "FAIL_CNT", columnDefinition = "integer default 0")
     private Integer failCnt = 0;
 
-    @Column(name = "ACCOUNT_LOCK", nullable = false)
+    @Column(name = "ACCOUNT_LOCK", columnDefinition = "varchar(1) default 'N'")
     private String accountLock = "N";
 
-    @Column(name = "USE_YN", nullable = false)
+    @Column(name = "USE_YN", columnDefinition = "varchar(1) default 'Y'")
     private String useYn = "Y";
 
-    @Column(name = "DELETE_YN", nullable = false)
+    @Column(name = "DELETE_YN", columnDefinition = "varchar(1) default 'N'")
     private String deleteYn = "N";
 
     @PrePersist
