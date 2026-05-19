@@ -12,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.api.devask.jwt.JwtUtil;
@@ -26,9 +23,6 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-    @Value("${jwt.secret}")
-    private String secretKey;
 
     // 2026.01.28 user 정보를 저장하는 메소드
     @Override
@@ -75,13 +69,9 @@ public class AuthServiceImpl implements AuthService {
          * JwtUtil의 expiration이 private이므로, 외부에서 알 수 있도록 JwtUtil에 getter를 추가하거나
          * 간단히 토큰에서 만료시간을 추출할 수도 있지만, 일단 임시로 직접 계산해서 반환하는 방식 사용
          * 현재 JwtUtil의 expiration을 가져오는 메소드가 없으므로, 향후 리팩토링이 필요
+         * 2026.05.20 JwtUtil을 통해 만료시간 추출하도록 리팩토링
          */
-        Date expirationDate = Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration();
+        Date expirationDate = jwtUtil.getExpirationDate(token);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String expireDateString = sdf.format(expirationDate);

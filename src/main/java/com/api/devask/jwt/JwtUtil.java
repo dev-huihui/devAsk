@@ -43,6 +43,16 @@ public class JwtUtil {
                 .getSubject();
     }
 
+    // 2026.05.20 JwtUtil을 통해 만료시간 추출 메소드 따로 처리
+    public Date getExpirationDate(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
