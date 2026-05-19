@@ -5,7 +5,6 @@ import com.api.devask.dto.auth.LoginRequestDTO;
 import com.api.devask.dto.auth.LoginResponseDTO;
 import com.api.devask.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class authController {
-    @Autowired
-    private AuthService authService;
+
+    private final AuthService authService;
 
     // 2026.04.13 회원가입(사용자 추가 by 사용자)
     @PostMapping("/signup")
