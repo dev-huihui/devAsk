@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -26,9 +27,9 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // JPA dependency add
+    // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    // db driver dependency add
+    // db driver
     implementation 'org.postgresql:postgresql:42.7.3'
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -43,4 +44,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
 }
