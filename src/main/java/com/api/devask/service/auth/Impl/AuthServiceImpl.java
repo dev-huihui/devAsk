@@ -60,30 +60,49 @@ public class AuthServiceImpl implements AuthService {
         User confirmUser = userRepository.findById(loginRequest.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
 
-        // 2026.04.17 입력받은 패스워드와 저장된 패스워드 일치 여부 확인
-        if (!passwordEncoder.matches(loginRequest.getPassword(), confirmUser.getPassword())) {
-            // 2026.04.20 비밀번호 불일치 시 실패 횟수 증가 후 저장
-            confirmUser.setFailCnt(confirmUser.getFailCnt() + 1);
-            userRepository.save(confirmUser);
-            // 2026.04.17 비밀번호 불일치 예외처리
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        // 2026.05.20 계정 잠금 여부 확인
+        if (confirmUser.getAccountLock().equals("Y")) {
+            throw new IllegalArgumentException("계정이 잠겨있습니다. 관리자에게 문의하세요.");
+        } else {
+            // 2026.04.17 입력받은 패스워드와 저장된 패스워드 일치 여부 확인
+            if (!passwordEncoder.matches(loginRequest.getPassword(), confirmUser.getPassword())) {
+                // 2026.05.20 비밀번호 횟수가 5회 이상이면 관리자에게 문의요청 알림
+                if (confirmUser.getFailCnt() >= 5) {
+                    throw new IllegalArgumentException("비밀번호 횟수가 5회 이상입니다. 관리자에게 문의하세요.");
+                } else {
+                    // 2026.04.20 비밀번호 불일치 시 실패 횟수 증가 후 저장
+                    confirmUser.setFailCnt(confirmUser.getFailCnt() + 1);
+
+                    // 2026.05.20 비밀번호 불일치 횟수가 5번이 되었을 때 계정 잠금처리
+                    if (confirmUser.getFailCnt() >= 5) {
+                        confirmUser.setAccountLock("Y");
+                    }
+                    userRepository.save(confirmUser);
+                    // 2026.04.17 비밀번호 불일치 예외처리
+                    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+                }
+            } else {
+                // 2026.05.20 비밀번호 일치 시 실패 횟수 0으로 초기화
+                confirmUser.setFailCnt(0);
+                userRepository.save(confirmUser);
+            }
+
+            // 2026.04.17 로그인 성공 시 JWT 토큰 생성
+            String token = jwtUtil.generateToken(confirmUser.getUserId());
+
+            /*
+             * 2026.04.17 만료시간 계산 (문자열로 변환)
+             * JwtUtil의 expiration이 private이므로, 외부에서 알 수 있도록 JwtUtil에 getter를 추가하거나
+             * 간단히 토큰에서 만료시간을 추출할 수도 있지만, 일단 임시로 직접 계산해서 반환하는 방식 사용
+             * 현재 JwtUtil의 expiration을 가져오는 메소드가 없으므로, 향후 리팩토링이 필요
+             * 2026.05.20 JwtUtil을 통해 만료시간 추출하도록 리팩토링
+             */
+            Date expirationDate = jwtUtil.getExpirationDate(token);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expireDateString = sdf.format(expirationDate);
+
+            return LoginResponseDTO.of(confirmUser.getUserId(), token, expireDateString);
         }
-
-        // 2026.04.17 로그인 성공 시 JWT 토큰 생성
-        String token = jwtUtil.generateToken(confirmUser.getUserId());
-
-        /*
-         * 2026.04.17 만료시간 계산 (문자열로 변환)
-         * JwtUtil의 expiration이 private이므로, 외부에서 알 수 있도록 JwtUtil에 getter를 추가하거나
-         * 간단히 토큰에서 만료시간을 추출할 수도 있지만, 일단 임시로 직접 계산해서 반환하는 방식 사용
-         * 현재 JwtUtil의 expiration을 가져오는 메소드가 없으므로, 향후 리팩토링이 필요
-         * 2026.05.20 JwtUtil을 통해 만료시간 추출하도록 리팩토링
-         */
-        Date expirationDate = jwtUtil.getExpirationDate(token);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String expireDateString = sdf.format(expirationDate);
-
-        return LoginResponseDTO.of(confirmUser.getUserId(), token, expireDateString);
     }
 }
