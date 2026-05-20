@@ -5,11 +5,9 @@ import com.api.devask.dto.auth.LoginRequestDTO;
 import com.api.devask.dto.auth.LoginResponseDTO;
 import com.api.devask.repository.user.UserRepository;
 import com.api.devask.service.auth.AuthService;
-import io.jsonwebtoken.Jwts;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.springframework.security.crypto.password.PasswordEncoder;
