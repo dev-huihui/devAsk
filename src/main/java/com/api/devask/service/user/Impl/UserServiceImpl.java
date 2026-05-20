@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
          * Optional 안에 값이 있으면 그 값을 꺼내고, 없으면 예외를 던져라
          */
         User changeUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("user 없음"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         // 2026.02.05 user 이름 값이 있을 경우에만
         if (user.getUserName() != null) {
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
          * Optional 안에 값이 있으면 그 값을 꺼내고, 없으면 예외를 던져라
          */
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("사용자 없음"));
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디의 사용자를 찾을 수 없습니다."));
 
         return UserResponseDTO.from(user);
     }
