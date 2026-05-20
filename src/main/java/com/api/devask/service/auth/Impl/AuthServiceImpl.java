@@ -22,6 +22,16 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
+    /*
+     * 2026.05.20 아이디 중복 체크하는 메소드
+     * true: 중복된 아이디가 있음
+     * false: 사용 가능한 아이디
+     */
+    @Override
+    public boolean checkId(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
     // 2026.01.28 user 정보를 저장하는 메소드
     @Override
     @Transactional

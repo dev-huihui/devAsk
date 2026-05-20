@@ -15,11 +15,17 @@ public class authController {
 
     private final AuthService authService;
 
+    // 2026.05.20 ID 중복체크 API
+    @GetMapping("/check-id")
+    public ResponseEntity<Boolean> checkUserId(@RequestParam String userId) {
+        return ResponseEntity.ok(authService.checkId(userId));
+    }
+
     // 2026.04.13 회원가입(사용자 추가 by 사용자)
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody User user) {
         authService.signUp(user);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("회원가입이 완료되었습니다.");
     }
 
     // 2026.04.17 로그인 기능추가
